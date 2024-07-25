@@ -10,7 +10,10 @@ function setup() {
 	text_box.text = points;
 	//world.gravity.y = 20
 	player = new Sprite();
-	player.diameter = 50;
+	player.w = 34;
+	player.h = 24;
+	player.debug = true;
+	player.image = "yellowbird-midflap.png"
 	player.overlaps(pillar, game_over);
 }
 
@@ -22,7 +25,6 @@ function game_over(){
 
 let count = 0;
 function draw() {
-	player.image = "yellowbird-midflap.png"
 	if (count%30 == 0){
 		let the_pillar_ground = new pillar.Sprite(500, 500, 50, 100);
 
