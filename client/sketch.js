@@ -1,6 +1,13 @@
 let player, pillar, text_box;
 let points = 0;
 
+let file;
+let best;
+
+function preload(){
+	file = loadJSON("best_score.json");
+}
+
 function setup() {
 	new Canvas(500, 500);
 	pillar = new Group();
@@ -13,12 +20,27 @@ function setup() {
 	player.debug = true;
 	player.image = "yellowbird-midflap.png"
 	player.overlaps(pillar, game_over);
+	best = file.best_score;
 }
 
 function game_over(){
+	file.best_score = best;
+	saveJSON(file, "best_score.json");
+	callShellScript();
 	clear();
 	background('skyblue')
 	noLoop();
+}
+function callShellScript() {
+	fetch('http://localhost:3000/execute-script', {
+	  method: 'POST',
+	  headers: {
+		'Content-Type': 'application/json'
+	  },
+	  body: JSON.stringify({ scriptPath: '' })
+	}).then(response => response.text())
+	  .then(data => console.log(data))
+	  .catch((error) => console.error('Error:', error));
 }
 
 let count = 0;
@@ -46,10 +68,8 @@ function draw() {
 		player.image = "yellowbird-upflap.png"
 		player.vel.y = 3
 	}
-	text_box = new Sprite(50,25,100,50,'n');
-	text_box.color = "grey";
-	text_box.text = points;
-	text_box.life = 20;
+	if (points >= best) best = points;
 	count++;
-	text_box.text = points;
+	text('Score: ' + points, 10, 10);
+	text('Best: ' + best, 10, 20);
 }

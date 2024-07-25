@@ -16,6 +16,8 @@
 		"v": "npm version patch --force",
 		"V": "npm version minor --force",
 		"version": "git add -A",
-		"postversion": "git push"
+		"postversion": "git push",
+		"test": "npm start",
+    	"start": "node sketch.js"
 	}
 }
