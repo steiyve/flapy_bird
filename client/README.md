@@ -1,15 +1,20 @@
-# p5play template
+# clone de flappy bird.
 
-This p5play-template folder contains a basic p5play project.
+## utiliser:
+1. lancer le serveur avec les commandes suivantes:
+	```bash
+	cd server
+	npm install cors
+	npm install express
+	npm start
+	```
+2. lancer le site web(je ne sais pas comment faire autrement):
+	1. installer l'extension de vscode live server.
+	2. appuyer sur le bouton GO LIVE.
+3. après chaque partie aller supprimer les fichier **best_score.json** et autre variation.
 
-`favicon.png` - The icon for the web page, which appears on the browser tab.
-`index.html` - Gets the latest version of p5play and runs your sketch.
-`sketch.js` - Write your code here! Starter code is provided.
-
-Use the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) Visual Studio Code extension to run your project in a web browser. Click "Go Live" in the bottom right corner of Visual Studio Code to start the server.
-
-If you want to work on p5play projects offline, then use the offline links in the `index.html` file. You can also choose to use p5play with p5.js, which is more beginner friendly, or q5.js, which is faster.
-
-To keep p5play updated for offline use, install [bun](https://bun.sh/) or [npm](https://nodejs.org). Then in the file menu hover over "Terminal" and select "New Terminal". In your p5play project folder run `bun up` or `npm up` to update p5play to the latest version.
-
-You can delete the contents of this file and write your own README describing your project.
+## fonctionnement du serveur
+1. telechargement du fichier avec le best score
+2. call vers le serveur pour lancer un script batch
+3. le script déplace le fichier **best_score.json** dans le dossier du jeu
+voila pourquoi il faut supprimer les fichier de votre dossier téléchargement
