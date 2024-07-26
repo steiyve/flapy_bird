@@ -9,7 +9,7 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(cors({origin: "*"}));
 
-let dataFilePath = './data.json'; // Path to the JSON file
+let dataFilePath = 'data.json'; // Path to the JSON file
 
 // Method to save data
 app.post('/save_best', (req, res) => {
