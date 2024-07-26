@@ -6,7 +6,7 @@ let best;
 let data;
 
 function saveBestData(data) {
-	fetch('http://localhost:3000/save_best', {
+	fetch('http://192.168.108.97:80/save_best', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ function saveBestData(data) {
 
 function getBestData() {
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:3000/get_best')
+        fetch('http://192.168.108.97:80/get_best')
             .then(response => {
                 if (!response.ok) {
                     reject(new Error(`HTTP error! status: ${response.status}`));

@@ -4,7 +4,7 @@ const fs = require('fs');
 const cors = require("cors");
 
 const app = express();
-const port = 3000;
+const port = 80;
 
 app.use(bodyParser.json());
 app.use(cors({origin: "*"}));
@@ -35,5 +35,5 @@ app.get('/get_best', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at 192.168.108.97:${port}`);
 });
