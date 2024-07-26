@@ -1,8 +1,9 @@
-let player, pillar, text_box;
+let player, pillar, text_box1, text_box2;
 let points = 0;
 
 let file;
 let best;
+let data;
 
 function saveBestData(data) {
 	fetch('http://localhost:3000/save_best', {
@@ -18,18 +19,23 @@ function saveBestData(data) {
 }
 
 function getBestData() {
-	fetch('http://localhost:3000/get_best')
-		.then(response => response.json())
-		.then(data => console.log(data))
-		.catch(error => console.error('Error:', error));
-	
+    return new Promise((resolve, reject) => {
+        fetch('http://localhost:3000/get_best')
+            .then(response => {
+                if (!response.ok) {
+                    reject(new Error(`HTTP error! status: ${response.status}`));
+                }
+                return response.json();
+            })
+            .then(data => resolve(data))
+            .catch(error => reject(error));
+    });
 }
 
-getBestData();
-
-function preload(){
-	getBestData();
-	//console.log(file)
+async function preload(){
+	data = await getBestData();
+	console.log(`data: ${data.best_score}`);
+	best = data.best_score;
 }
 
 function setup() {
@@ -44,11 +50,12 @@ function setup() {
 	player.debug = true;
 	player.image = "yellowbird-midflap.png"
 	player.overlaps(pillar, game_over);
-	//best = getBestDat();
 }
 
+
 function game_over(){
-	const dataToSend = {best_score: best};
+	const dataToSend = {"best_score": best};
+	console.log(dataToSend);
 	saveBestData(dataToSend);
 	clear();
 	background('skyblue')
@@ -56,15 +63,14 @@ function game_over(){
 }
 
 
-// Call the function to retrieve data
-
-
-
-// Example usage
-
-
 let count = 0;
 function draw() {
+	text_box1 = new Sprite(100,25, 200,50, 'n');
+	text_box1.color = "grey";
+	text_box1.life = 100;
+	text_box2 = new Sprite(100,75, 200,50, 'n');
+	text_box2.color = "grey";
+	text_box2.life = 100;
 	if (count%30 == 0){
 		let the_pillar_ground = new pillar.Sprite(500, 500, 50, 100);
 		
@@ -90,6 +96,6 @@ function draw() {
 	}
 	if (points >= best) best = points;
 	count++;
-	text('Score: ' + points, 10, 10);
-	text('Best: ' + best, 10, 20);
+	text_box1.text = `score: ${points}`;
+	text_box2.text = `best score: ${best}`;
 }
