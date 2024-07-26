@@ -4,8 +4,32 @@ let points = 0;
 let file;
 let best;
 
+function saveBestData(data) {
+	fetch('http://localhost:3000/save_best', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	})
+	.then(response => response.text())
+	.then(message => console.log(message))
+	.catch(error => console.error('Error:', error));
+}
+
+function getBestData() {
+	fetch('http://localhost:3000/get_best')
+		.then(response => response.json())
+		.then(data => console.log(data))
+		.catch(error => console.error('Error:', error));
+	
+}
+
+getBestData();
+
 function preload(){
-	file = loadJSON("best_score.json");
+	getBestData();
+	//console.log(file)
 }
 
 function setup() {
@@ -20,28 +44,24 @@ function setup() {
 	player.debug = true;
 	player.image = "yellowbird-midflap.png"
 	player.overlaps(pillar, game_over);
-	best = file.best_score;
+	//best = getBestDat();
 }
 
 function game_over(){
-	file.best_score = best;
-	saveJSON(file, "best_score.json");
-	callShellScript();
+	const dataToSend = {best_score: best};
+	saveBestData(dataToSend);
 	clear();
 	background('skyblue')
 	noLoop();
 }
-function callShellScript() {
-	fetch('http://localhost:3000/execute-script', {
-	  method: 'POST',
-	  headers: {
-		'Content-Type': 'application/json'
-	  },
-	  body: JSON.stringify({ scriptPath: '' })
-	}).then(response => response.text())
-	  .then(data => console.log(data))
-	  .catch((error) => console.error('Error:', error));
-}
+
+
+// Call the function to retrieve data
+
+
+
+// Example usage
+
 
 let count = 0;
 function draw() {

@@ -1,24 +1,39 @@
 const express = require('express');
-const { exec } = require('child_process');
+const bodyParser = require('body-parser');
+const fs = require('fs');
 const cors = require("cors");
 
 const app = express();
+const port = 3000;
 
+app.use(bodyParser.json());
 app.use(cors({origin: "*"}));
-app.use(express.json());
 
-app.post('/execute-script', (req, res) => {
-  const scriptPath = req.body.scriptPath;
-  exec("C:/Users/pfkik/OneDrive/Bureau/nicolas/flappy_bird/server/move_file.bat", (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return res.status(500).send(error.message);
-    }
-    //res.send(stdout);
-    console.log(stdout);
-    return res.status(200).send("presque");
-  });
+let dataFilePath = './data.json'; // Path to the JSON file
+
+// Method to save data
+app.post('/save_best', (req, res) => {
+    const data = req.body;
+    fs.writeFile(dataFilePath, JSON.stringify(data, null, 2), (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Failed to save data.');
+        }
+        res.send('Data saved successfully.');
+    });
 });
 
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+// Method to retrieve data
+app.get('/get_best', (req, res) => {
+    fs.readFile(dataFilePath, (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Failed to retrieve data.');
+        }
+        res.send(JSON.parse(data));
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
